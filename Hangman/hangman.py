@@ -16,12 +16,14 @@ with open ('hangmanWords',  'r') as file:
 
 guessedLetters = 0
 underScores = []
-listRandWords = []
-inWord = False
+listRandWord = []
+listGuessedLetters = []
 notInWord = False
+alreadyGuessed = False
+guessedLettersDisplay = set()
 
 for x in randWord:
-    listRandWords.append(x)
+    listRandWord.append(x)
 
 for x in range(wordLength):
     underScores.append("_ ")
@@ -32,6 +34,10 @@ print(wordLengthDisplay)
 
 
 while gameOver == False:
+    if guessedLettersDisplay == set():
+        pass
+    else:
+        print("Guessed Letters:", guessedLettersDisplay)
     print("You have", lives, "lives remaining     Input a letter: ", end="")
     inputLetter = input()
     inputLetter = inputLetter.strip()
@@ -45,37 +51,34 @@ while gameOver == False:
         print(wordLengthDisplay)
         continue
 
-    for wordIndex in range(len(listRandWords)):
-        if listRandWords[wordIndex] == inputLetter:
-            inWord = True
+    for wordIndex in range(len(listRandWord)):
+        if listRandWord[wordIndex] == inputLetter:
+            notInWord = True
             underScores[wordIndex] = inputLetter
             wordLengthDisplay = "".join(underScores)
             clear()
             print(wordLengthDisplay)
             guessedLetters += 1
-            continue
+        else:
+            pass
+    listGuessedLetters.append(inputLetter)
+    guessedLettersDisplay.add(inputLetter)
             
-        elif listRandWords[wordIndex] != inputLetter and inWord == False:
-            notInWord = True
-            inWord = True
 
-    if notInWord == True:
-        lives -= 1
-        print("test")
-        clear()
-        print(wordLengthDisplay)
-        notInWord = False
-        inWord = True
+    if notInWord == False:
+            lives -= 1
+            print("\n\nThe letter'", inputLetter, "'is not in the word")
+            time.sleep(0.8)
+            clear()
+            print(wordLengthDisplay)
+            notInWord = False
         
     if lives == 0:
         clear()
-        print("You Lost!")
+        print("You Lost! The word was:", randWord)
         gameOver = True
 
     if guessedLetters == wordLength:
         clear()
-        print("You Guessed The Word!")
+        print("You Guessed The Word:", randWord)
         gameOver = True
-            
-    clear()
-    print(wordLengthDisplay)
