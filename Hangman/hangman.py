@@ -3,7 +3,7 @@ import random
 import time
 
 lives = 6
-clear = lambda: os.system('clear') # os.system("clear") for linux   os.system("cls") for windows
+clear = lambda: os.system('cls') # os.system("clear") for linux   os.system("cls") for windows
 gameOver = False
 clear()
 
@@ -19,7 +19,7 @@ underScores = []
 listRandWord = []
 listGuessedLetters = []
 notInWord = False
-alreadyGuessed = False
+alreadyGuessed = 0
 guessedLettersDisplay = set()
 
 for x in randWord:
@@ -45,10 +45,34 @@ while gameOver == False:
     notInWord = False
 
     if inputLetter.isdigit():
-        print("Value entered is not a letter")
-        time.sleep(0.5)
+        print("\n\nValue entered is not a letter!")
+        time.sleep(0.6)
         clear()
         print(wordLengthDisplay)
+        continue
+
+    if len(inputLetter) > 1:
+        print("\n\nYou can only enter one letter!")
+        time.sleep(0.6)
+        clear()
+        print(wordLengthDisplay)
+        continue
+
+    for x in guessedLettersDisplay:
+        if x == set():
+            pass
+
+        elif inputLetter == x:
+            print("\n\nYou have already guessed the letter")
+            time.sleep(0.6)
+            clear()
+            print(wordLengthDisplay)
+            alreadyGuessed = True
+
+        else:
+            alreadyGuessed = False
+
+    if alreadyGuessed == True:
         continue
 
     for wordIndex in range(len(listRandWord)):
@@ -59,16 +83,18 @@ while gameOver == False:
             clear()
             print(wordLengthDisplay)
             guessedLetters += 1
+
         else:
             pass
+
     listGuessedLetters.append(inputLetter)
     guessedLettersDisplay.add(inputLetter)
             
 
     if notInWord == False:
             lives -= 1
-            print("\n\nThe letter'", inputLetter, "'is not in the word")
-            time.sleep(0.8)
+            print("\n\nThe letter", inputLetter, "is not in the word")
+            time.sleep(0.6)
             clear()
             print(wordLengthDisplay)
             notInWord = False
@@ -80,5 +106,5 @@ while gameOver == False:
 
     if guessedLetters == wordLength:
         clear()
-        print("You Guessed The Word:", randWord)
+        print("You guessed The word:", randWord)
         gameOver = True
